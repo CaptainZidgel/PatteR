@@ -1,7 +1,7 @@
 # PatteR
 Lua pattern realtime recognition, powered by [Vue](https://vuejs.org/) and [Fengari](https://fengari.io/).
 
-Based on [RegExr](regexr.com)
+Based on [RegExr](https://regexr.com)
 
 ## Roadmap
 1. Make match groups work.
