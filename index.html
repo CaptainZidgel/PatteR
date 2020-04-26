@@ -7,9 +7,10 @@
 	<script src="https://cdn.jsdelivr.net/npm/fengari-web@0.1.4/dist/fengari-web.js"></script>
 </head>
 <body>
+	<div id="banner"><span style="font-size: large;">PatteR</span><span style="float: right;">Find me on <a href="https://github.com/captainzidgel/patter">Github!</a></span></div>
 	<div id="cheatsheet">
 		<h4>Character classes</h4>
-			<p>.	|	all characters</p>
+			<p>.	| all characters</p>
 			<p>%a	| letters</p>
 			<p>%c	| control characters</p>
 			<p>%d	| digits</p>
@@ -21,29 +22,28 @@
 			<p>%x	| hexadecimal digits</p>
 			<p>%z	| the character with representation 0</p>
 		<hr>
-			<p>^ | Start of sentence</p>
-			<p>$ | End of sentence</p>
+			<p>^	| Start of sentence</p>
+			<p>$	| End of sentence</p>
 			<p>Capitalize to invert. %A - anything but letters, %S - anything but spaces</p>
-			<p>% | Escape special character. Chars that need escaping: ( ) . % + - * ? [ ^ $
+			<p>%	| Escape special character. Chars that need escaping: ( ) . % + - * ? [ ^ $
 		<h4>Quantify and organize</h4>
-			<p>() | Capture group</P>
-			<p>+  |	1 or more repetitions</p>
+			<p>()	| Capture group</P>
+			<p>+	| 1 or more repetitions</p>
 			<p>*	| 0 or more repetitions</p>
 			<p>-	| also 0 or more repetitions</p>
 			<p>?	| optional (0 or 1 occurrence)</p>
-			<p>[] | Charset, match any inside. Include ^ at the start ([^]) to invert. (match "not these").</p>
+			<p>[]	| Charset, match any inside. Include ^ at the start ([^]) to invert. (match "not these").</p>
 	</div>
 	<div id="main">
-		<textarea id="sandbox" v-model="sbval" @change="mat()"></textarea><br>
+		<textarea id="sandbox" v-model="sbval" @change="mat()" rows="10" cols="70"></textarea><br>
 		<input type="text" placeholder="Your pattern" v-model="pattern" @change="mat()" id="pattern">
-		<p id="result" v-html="patternResult"></p><br>
+		<div id="result" v-html="patternResult"></div><br>
 	</div>
 	<p>The default method used here is string.gsub, so that each potential match is highlighted. string.match will only return the first instance.</p>
 	<footer>Special thanks: <a href="https://github.com/gskinner">Grant Skinner</a> for creating <a href="https://regexr.com/">RegExr</a>, which this is based on. In fact a lot of the style and cheatsheet is practically lifted from RegExr. I'm pretty sure the license allows that but if not, please raise an issue on github.</footer>
 
 <script type="application/lua">
 	local js = require("js")
-	js.global.match = function(_, s, p) return string.match(s, p) end
 	js.global.gsub = function(_, s, p, r) return string.gsub(s, p, function(m) return "<mark>"..m.."</mark>" end) end
 </script>
 <script>
@@ -51,12 +51,14 @@ var patter = new Vue({
 	el: "#main",
 	data: {
 		pattern: "%s.",
-		sbval: "This is a test of the sandbox",
-		result: "This is a test of the sandbox"
+		sbval: `This is your sandbox, you can type anything you want in here and then do some pattern matching.
+
+The quick brown fox jumped over the lazy dog.
+Phone numbers look like (012)-345-6789
+Please note that in this alpha version of PatteR, capture groups do not exactly work well. Hopefully you'll get an idea if what kind of results they'll produce, though.`,
 	},
 	computed: {
 		patternResult: function() {
-			//return match(this.sbval, this.pattern)
 			return gsub(this.sbval, this.pattern)
 		}
 	},
@@ -64,11 +66,17 @@ var patter = new Vue({
 		mat: function(){console.log("Updating"); this.result = this.sbval}
 	}
 })
-//console.log(match("HeLLo", "%l%w+"), "matched")
+
 </script>
 <style>
 	body {
 		background-color: #ebebeb;
+		margin: 0px;
+	}
+	#banner {
+		background-color: #b7b7b7;
+		padding: 15px;
+		margin: 0px;
 	}
 	#cheatsheet {
 		width: 200px;
@@ -87,6 +95,15 @@ var patter = new Vue({
   #cheatsheet p:nth-child(odd) {
 		background-color: light-gray;
 	}
+	#result {
+		border: 1px solid black;
+		margin: 5px;
+		overflow: auto;
+		white-space: pre;
+	}
+	#main {
+		float: left;
+	}
 	footer {
 		float: right;
 		position: absolute;
@@ -97,7 +114,13 @@ var patter = new Vue({
 		background-color: #7aa9f5;
 	}
 	mark:hover {
-		border: 1px solid black;
+		outline: 1px solid black;
+	}
+	h4 {
+		margin: 0px;
+	}
+	textarea {
+		margin-top: 10px;
 	}
 </style>
 </body>
