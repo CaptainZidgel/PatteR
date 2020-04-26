@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="fengari-web.js" type="text/javascript"></script>
+</head>
+<body>
+	<div id="main">
+		<textarea id="sandbox" v-model="sbval" @change="mat()"></textarea><br>
+		<input type="text" placeholder="Your pattern" v-model="pattern" @change="mat()" id="pattern">
+		<p id="result" v-html="patternResult"></p><br>
+	</div>
+	<p>The default method used here is string.gsub, so that each potential match is highlighted. string.match will only return the first instance.</p>
+
+
+<script type="application/lua">
+	local js = require("js")
+	js.global.match = function(_, s, p) return string.match(s, p) end
+	js.global.gsub = function(_, s, p, r) return string.gsub(s, p, function(m) return "<b>"..m.."</b>" end) end
+</script>
+<script>
+var patter = new Vue({
+	el: "#main",
+	data: {
+		pattern: "",
+		sbval: "This is a test of the sandbox",
+		result: "This is a test of the sandbox"
+	},
+	computed: {
+		patternResult: function() {
+			//return match(this.sbval, this.pattern)
+			return gsub(this.sbval, this.pattern)
+		}
+	},
+	methods: {
+		mat: function(){console.log("Updating"); this.result = this.sbval}
+	}
+})
+//console.log(match("HeLLo", "%l%w+"), "matched")
+</script>
+
+</body>
+</html>
