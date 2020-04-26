@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div id="cheatsheet">
-		<h3>Character classes</h3>
+		<h4>Character classes</h4>
 			<p>.	|	all characters</p>
 			<p>%a	| letters</p>
 			<p>%c	| control characters</p>
@@ -20,6 +20,18 @@
 			<p>%w	| alphanumeric characters</p>
 			<p>%x	| hexadecimal digits</p>
 			<p>%z	| the character with representation 0</p>
+		<hr>
+			<p>^ | Start of sentence</p>
+			<p>$ | End of sentence</p>
+			<p>Capitalize to invert. %A - anything but letters, %S - anything but spaces</p>
+			<p>% | Escape special character. Chars that need escaping: ( ) . % + - * ? [ ^ $
+		<h4>Quantify and organize</h4>
+			<p>() | Capture group</P>
+			<p>+  |	1 or more repetitions</p>
+			<p>*	| 0 or more repetitions</p>
+			<p>-	| also 0 or more repetitions</p>
+			<p>?	| optional (0 or 1 occurrence)</p>
+			<p>[] | Charset, match any inside. Include ^ at the start ([^]) to invert. (match "not these").</p>
 	</div>
 	<div id="main">
 		<textarea id="sandbox" v-model="sbval" @change="mat()"></textarea><br>
@@ -27,7 +39,7 @@
 		<p id="result" v-html="patternResult"></p><br>
 	</div>
 	<p>The default method used here is string.gsub, so that each potential match is highlighted. string.match will only return the first instance.</p>
-	<footer>Special thanks: <a href="https://github.com/gskinner">Grant Skinner</a> for creating <a href="https://regexr.com/">RegExr</a>, which this is based on.</footer>
+	<footer>Special thanks: <a href="https://github.com/gskinner">Grant Skinner</a> for creating <a href="https://regexr.com/">RegExr</a>, which this is based on. In fact a lot of the style and cheatsheet is practically lifted from RegExr. I'm pretty sure the license allows that but if not, please raise an issue on github.</footer>
 
 <script type="application/lua">
 	local js = require("js")
@@ -76,12 +88,16 @@ var patter = new Vue({
 		background-color: light-gray;
 	}
 	footer {
+		float: right;
 		position: absolute;
 		bottom: 0;
-		margin-left: 15px;
+		margin-left: 400px;
 	}
 	mark {
 		background-color: #7aa9f5;
+	}
+	mark:hover {
+		border: 1px solid black;
 	}
 </style>
 </body>
