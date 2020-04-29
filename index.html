@@ -3,8 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<!--<script src="fengari-web.js" type="text/javascript"></script>-->
 	<script src="https://cdn.jsdelivr.net/npm/fengari-web@0.1.4/dist/fengari-web.js"></script>
+	<link rel="stylesheet" type="text/css" href="patter.css">
+
+	<!-- He's bad at software design -->
+	<!-- Who is? -->
+	<!-- The boy writing this :3 -->
 </head>
 <body>
 	<div id="banner"><span style="font-size: large;">PatteR</span><span style="float: right;">Find me on <a href="https://github.com/captainzidgel/patter">Github!</a></span></div>
@@ -35,16 +39,26 @@
 			<p>[]	| Charset, match any inside. Include ^ at the start ([^]) to invert. (match "not these").</p>
 	</div>
 	<div id="main">
-		<textarea id="sandbox" v-model="sbval" @change="mat()" rows="10" cols="70"></textarea><br>
-		<input type="text" placeholder="Your pattern" v-model="pattern" @change="mat()" id="pattern">
+		<textarea id="sandbox" v-model="sbval" rows="10" cols="70"></textarea><br>
+		<input id="pattern" type="text" placeholder="Your pattern" v-model="pattern" id="pattern">
 		<div id="result" v-html="patternResult"></div><br>
 	</div>
-	<p>The default method used here is string.gsub, so that each potential match is highlighted. string.match will only return the first instance.</p>
-	<footer>Special thanks: <a href="https://github.com/gskinner">Grant Skinner</a> for creating <a href="https://regexr.com/">RegExr</a>, which this is based on. In fact a lot of the style and cheatsheet is practically lifted from RegExr. I'm pretty sure the license allows that but if not, please raise an issue on github.</footer>
+	<div id="supplementary-info">
+		<p>Every possible match is highlighted by using the string.gsub function to add html mark tags around each tag. Other methods work differently. String.match will return the first match. String.gmatch will create an iterator over all matches.</p>
+		<p>Due to <span title="I am bad at programming">"technical limitations"</span>, this tool does not highlight groups exclusively. If you enter the pattern "%s(%S)" and test the string " hello", the tool will highlight "<mark> h</mark>ello" but string.match will only return "h" (no space).</p>
+		<p>String.gsub usage: <code>string.gsub(string, pattern, replacement)</code>
+			<br>Replacement can be a string or a function. It replaces the entire match (including that outside of a group) with either the string given, or the string given by the return statement of the given function. 
+			<br>If using a raw string, tokens %0 represents the entire match and %n represents nth group (e.g. %2 is the second group). 
+			<br>When supplying a function, parameters represent groups in the order they're given (a,b,c) = (first, second, third group matches). 
+			<br>You can also use a table to replace matches with values stored in keys. <a href="https://pgl.yoyo.org/luai/i/string.gsub">Further info</a>.</p>
+		<br><br><footer>Special thanks: <a href="https://github.com/gskinner">Grant Skinner</a> for creating <a href="https://regexr.com/">RegExr</a>, which this is based on. In fact a lot of the style and cheatsheet is practically lifted from RegExr. I'm pretty sure that's legal but if not, please raise an issue on github.</footer>
+	</div>
 
 <script type="application/lua">
 	local js = require("js")
-	js.global.gsub = function(_, s, p, r) return string.gsub(s, p, function(m) return "<mark>"..m.."</mark>" end) end
+	js.global.gsub = function(_, s, p, r) 
+		return string.gsub(s, p, [[<mark>%0</mark>]]) 
+	end
 </script>
 <script>
 var patter = new Vue({
@@ -55,73 +69,15 @@ var patter = new Vue({
 
 The quick brown fox jumped over the lazy dog.
 Phone numbers look like (012)-345-6789
-Please note that in this alpha version of PatteR, capture groups do not exactly work well. Hopefully you'll get an idea if what kind of results they'll produce, though.`,
+Hey Vsauce! Lua patterns are like regular expressions. Or are they?`,
 	},
 	computed: {
 		patternResult: function() {
 			return gsub(this.sbval, this.pattern)
 		}
-	},
-	methods: {
-		mat: function(){console.log("Updating"); this.result = this.sbval}
 	}
 })
 
 </script>
-<style>
-	body {
-		background-color: #ebebeb;
-		margin: 0px;
-	}
-	#banner {
-		background-color: #b7b7b7;
-		padding: 15px;
-		margin: 0px;
-	}
-	#cheatsheet {
-		width: 200px;
-		float: left;
-		border: 1px solid black;
-		padding: 10px;
-		margin: 10px;
-	}
-	#cheatsheet p {
-		margin: 0px;
-		white-space: pre-wrap;
-	}
-	#cheatsheet p:nth-child(even) {
-		background-color: white;
-	}
-  #cheatsheet p:nth-child(odd) {
-		background-color: light-gray;
-	}
-	#result {
-		border: 1px solid black;
-		margin: 5px;
-		overflow: auto;
-		white-space: pre;
-	}
-	#main {
-		float: left;
-	}
-	footer {
-		float: right;
-		position: absolute;
-		bottom: 0;
-		margin-left: 400px;
-	}
-	mark {
-		background-color: #7aa9f5;
-	}
-	mark:hover {
-		outline: 1px solid black;
-	}
-	h4 {
-		margin: 0px;
-	}
-	textarea {
-		margin-top: 10px;
-	}
-</style>
 </body>
 </html>

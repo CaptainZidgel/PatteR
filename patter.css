@@ -1,0 +1,58 @@
+body {
+	background-color: #ebebeb;
+	margin: 0px;
+}
+#banner {
+	background-color: #b7b7b7;
+	padding: 15px;
+	margin: 0px;
+}
+#cheatsheet {
+	width: 200px;
+	float: left;
+	border: 1px solid black;
+	padding: 10px;
+	margin: 10px;
+}
+#cheatsheet p {
+	margin: 0px;
+	white-space: pre-wrap;
+}
+#cheatsheet p:nth-child(even) {
+	background-color: white;	
+}
+#cheatsheet p:nth-child(odd) {
+	background-color: light-gray;
+}
+#result {
+	border: 1px solid black;
+	margin: 5px;
+	white-space: pre-wrap;
+	width: 510px;
+	height: 500px;
+}
+#main {
+	/*width: 1000px;*/
+	float: left;
+}
+#sandbox {
+	resize: none;
+}
+#pattern {
+	width: 505px;
+}
+#supplementary-info {
+  width: 1200px;
+}
+mark {
+	background-color: #7aa9f5;
+}
+mark:hover {
+	outline: 1px solid black;
+}
+h4 {
+	margin: 0px;
+}
+textarea {
+	margin-top: 10px;
+}
